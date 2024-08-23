@@ -31,9 +31,7 @@
 
     </tr>
   </thead>
-  <tbody>
-  <h3>${cartSession.quantity}</h3>
-  </tbody>
+
 <tbody>
   <c:forEach var="item" items="${cartList}">
     <tr>

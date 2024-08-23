@@ -17,7 +17,7 @@
 
 <body>
 <h3>Please fill information</h3>
-<mvc:form action="placeOrder" method="post" modelAttribute="orderList">
+<mvc:form action="placeOrder" modelAttribute="orderList">
 	<table>
 	<tr>
 	<td>Customer Name (*)</td>

@@ -16,33 +16,33 @@
 </head>
 
 <body>
-<h2>My Order List</h2>
-<c:if test="${empty orderList}">
-    <p>Your order is empty.</p>
+<h2>Order Detail List</h2>
+<c:if test="${empty orderDetails}">
+    <p>Your order detail is empty.</p>
 </c:if>
-<c:if test="${not empty orderList}">
+<c:if test="${not empty orderDetails}">
 <table class="table">
   <thead>
+  <h2>Order Id: ${orderId}</h2>
     <tr>
-      <th scope="col">Id</th>
-      <th scope="col">Order Date</th>
-      <th scope="col">Customer Name</th>
-      <th scope="col">Customer Address</th>
-      <th scope="col">Order Detail</th>
+      <th scope="col">Order Detail Id</th>
+      <th scope="col">Product Name </th>
+      <th scope="col">Description </th>
+      <th scope="col">Unit Price</th>
+      <th scope="col">Quantity</th>
 
     </tr>
   </thead>
 
 <tbody>
-  <c:forEach var="order" items="${orderList}">
+  <c:forEach var="detail" items="${orderDetails}">
     <tr>
-      <th scope="row">${order.id}</th>
-      <td>${order.orderDate}</td>
-      <td>${order.customerName}</td>
-      <td>${order.customerAddress}</td>
-      <td>
-      <button class="btn btn-primary" onclick="location.href='/orderDetails/${order.id}'">View Details</button>
-      </td>
+      <th scope="row">${detail.id}</th>
+      <td>${detail.product.name}</td>
+      <td>${detail.product.description}</td>
+      <td>${detail.product.unitPrice}</td>
+      <td>${detail.quantity}</td>
+
     </tr>
   </c:forEach>
 </tbody>

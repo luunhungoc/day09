@@ -20,7 +20,7 @@ public class MainCart {
 
     public static void main(String[] args) {
 
-showAll();
+//showAll();
 //        createNewProduct("Java A-Z","Java books",190);
 //        createNewProduct("IT","IT books",550);
 //        createNewProduct("Pen","Pen des",10);

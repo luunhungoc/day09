@@ -5,7 +5,7 @@ import mvc.entity.ProductEntity;
 import java.util.List;
 
 public class CartSession {
-    List<CartSession> cartSessionList;
+
     ProductEntity product;
     private int quantity;
 
@@ -15,21 +15,6 @@ public class CartSession {
     public CartSession(ProductEntity product, int quantity) {
         this.product=product;
         this.quantity = quantity;
-    }
-
-    public void addItem(ProductEntity product){
-        CartSession cartSession=new CartSession();
-        cartSession.setProduct(product);
-        cartSession.setQuantity(1);
-
-    }
-
-    public List<CartSession> getCartSessionList() {
-        return cartSessionList;
-    }
-
-    public void setCartSessionList(List<CartSession> cartSessionList) {
-        this.cartSessionList = cartSessionList;
     }
 
     public CartSession() {
