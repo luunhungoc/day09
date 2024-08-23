@@ -17,7 +17,7 @@
 
 <body>
 <h3>Please fill information</h3>
-<mvc:form action="checkOut" method="post" modelAttribute="order">
+<mvc:form action="placeOrder" method="post" modelAttribute="orderList">
 	<table>
 	<tr>
 	<td>Customer Name (*)</td>
@@ -31,7 +31,7 @@
 
 
 	</table>
-<button type="submit" class="btn btn-primary" onclick="location.href='/orders'">Continue</button>
+<button type="submit" class="btn btn-primary">Continue</button>
 	</mvc:form>
 
 </body>

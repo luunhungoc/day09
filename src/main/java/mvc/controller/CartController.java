@@ -8,6 +8,7 @@ import mvc.formregistration.User;
 import mvc.repository.OrderRepository;
 import mvc.repository.ProductRepository;
 import mvc.session.CartSession;
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,43 +35,43 @@ public class CartController {
     @Autowired
     OrderRepository orderRepository;
 
-    public String addToOrder(OrdersEntity order,HttpSession session) {
-        List<CartSession> cartList = (List<CartSession>) session.getAttribute("cartList");
+    @RequestMapping(value="/checkOut")
+    public String checkout(Model model,HttpSession session) {
+        CartSession cartSession = (CartSession) session.getAttribute("cartSession");
+        OrdersEntity orderList = new OrdersEntity();
+        model.addAttribute("orderList",orderList);
+        model.addAttribute("customerName",orderList.getCustomerName());
+        model.addAttribute("customerAddress",orderList.getCustomerAddress());
+        return "cart/checkOut";
+    }
 
-        if (cartList != null && !cartList.isEmpty()) {
-            List<OrderDetailEntity> orderDetailsList = new ArrayList<>();
+    @RequestMapping(value="/placeOrder")
+    public String placeOrder(OrdersEntity order, HttpServletRequest request){
+        HttpSession session = request.getSession();
+        CartSession cartSession = (CartSession) session.getAttribute("cartSession");
 
-            for (CartSession cartItem : cartList) {
-                OrderDetailEntity orderDetails = new OrderDetailEntity();
-                orderDetails.setProduct(cartItem.getProduct());
-                orderDetails.setQuantity(cartItem.getQuantity());
+        String customerName=(String) session.getAttribute("customerName");
+        String customerAddress=(String) session.getAttribute("customerAddress");
 
-                orderDetailsList.add(orderDetails);
+        if (cartSession != null && !cartSession.getProduct().getOrderDetailEntityList().isEmpty()) {
+            List<OrderDetailEntity> orderDetailsList = cartSession.getProduct().getOrderDetailEntityList();
+
+            for (OrderDetailEntity details : orderDetailsList) {
+                details.setOrder(order);
             }
-
+            // Set customer information
+            order.setCustomerName(customerName);
+            order.setCustomerAddress(customerAddress);
             order.setOrderDetailsEntityList(orderDetailsList);
 
-             orderRepository.save(order);
+            // Save the order and orderDetailsList to the database
+            orderRepository.save(order);
 
+            // Clear the cart
+//            session.removeAttribute("cartSession");
         }
 
-        return "cart/orders";
-    }
-
-    @RequestMapping(value="/orders",method = GET)
-    public String showOrders(Model model,HttpServletRequest request) {
-        List<OrdersEntity> ordersList = (List<OrdersEntity>) request.getSession().getAttribute("ordersList");
-        model.addAttribute("ordersList", ordersList);
-        return "cart/orders";
-    }
-    @RequestMapping(value="/checkOut", method=POST)
-    public String checkOut(Model model,HttpSession session){
-        List<CartSession> cartList = (List<CartSession>) session.getAttribute("cartList");
-
-        OrdersEntity order = new OrdersEntity(); // Create an empty Order object
-        model.addAttribute("order", order);
-
-        return "cart/checkOut";
+        return "redirect:/orders";
     }
 
 
@@ -110,6 +111,12 @@ public class CartController {
 
     }
 
+    @RequestMapping(value = "/orders")
+    public String showOrders(Model model, HttpServletRequest request) {
+        OrdersEntity orderList = (OrdersEntity) request.getSession().getAttribute("orderList");
+        model.addAttribute("orderList", orderList);
+        return "cart/orders";
+    }
     @RequestMapping(value = "/cart")
     public String showCart(Model model, HttpServletRequest request) {
         List<CartSession> cartList = (List<CartSession>) request.getSession().getAttribute("cartList");
