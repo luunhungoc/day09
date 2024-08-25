@@ -124,7 +124,7 @@ public class CartController {
     }
 
     @RequestMapping(value = "/orderDetails/{id}", method = GET)
-    public String showOrderDetailsById(Model model,@PathVariable int id) {
+    public String showOrderDetailsByOrderId(Model model,@PathVariable int id) {
         OrdersEntity orderList = orderRepository.findById(id).get();
         List<OrderDetailEntity> orderDetails = orderList.getOrderDetailsEntityList();
         model.addAttribute("orderDetails", orderDetails);
